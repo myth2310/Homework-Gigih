@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -14,7 +15,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: black;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,7 +27,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: wheat;
 }
 
 @keyframes App-logo-spin {
@@ -36,3 +38,143 @@
     transform: rotate(360deg);
   }
 }
+
+
+.search {
+  float: left;
+  margin-top: 20px;
+}
+.search input{
+  margin-right: 5px;
+}
+.search button{
+  background-color: white;
+  cursor: pointer;
+}
+.search input, button{
+  padding: 10px 10px;
+  border-radius:5px white;
+}
+
+img{
+  margin-bottom: 10px;
+  width: 10%;
+  height: 10%;
+}
+
+/* playlist container */
+.playlist-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+  margin: 16px auto;
+}
+/* items inside playlist */
+.playlist-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  border: 1px solid white;
+  padding: 10px;
+  margin: 4px auto;
+}
+/* playlist image */
+.playlist-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 70%;
+  margin-right: 10px;
+}
+/* playlist content */
+.playlist-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+/* playlist title */
+.playlist-title {
+  font-size: 15px;
+  margin-left: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+/* playlist description */
+.playlist-description {
+  font-size: 20px;
+  margin-left: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color:white;
+  font-family: 'Courier New', Courier, monospace;
+}
+/* playlist actions */
+.playlist-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  cursor: pointer;
+  margin-right: 30px;
+ 
+}
+.playlist-action:hover{
+  background-color:white;
+  color: black;
+}
+/* playlist action */
+.playlist-action {
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 25px;
+  background-color: #00bcd4;
+  color: #fff;
+  cursor: pointer;
+  border: #eee 1px solid;
+}
+
+.playlist-action a{
+  text-decoration: none;
+  color: white;
+}
+
+.playlist-action a:hover{
+  color: black;
+}
+
+.desc p{
+  float: left;
+  font-size: 15px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin-left: 20px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+  margin-top: 20px;
+  color: black;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+
+
+
