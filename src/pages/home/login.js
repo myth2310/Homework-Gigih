@@ -1,49 +1,88 @@
-import React from 'react';
+import {useEffect, useState} from "react";
 import '../../App.css';
+import axios from 'axios';
 
-class Login extends React.Component {
-	generateRandomString = (length) => {
-		var text = '';
-		var possible =
-			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function login() {
+    const CLIENT_ID = "a43d691e54a04cd6991b32ccae36403a"
+    const REDIRECT_URI = "http://localhost:3000"
+    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+    const RESPONSE_TYPE = "token"
 
-		for (var i = 0; i < length; i++) {
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
-		}
-		return text;
-	};
+    const [token, setToken] = useState("")
+    const [searchKey, setSearchKey] = useState("")
+    const [artists, setArtists] = useState([])
 
-	handleLogin = (e) => {
-		e.preventDefault();
-		var stateKey = 'spotify_auth_state';
-		var client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-		var redirect_uri = 'http://localhost:3000/';
+    useEffect(() => {
+        const hash = window.location.hash
+        let token = window.localStorage.getItem("token")
 
-		var state = this.generateRandomString(16);
+        // getToken()
 
-		localStorage.setItem(stateKey, state);
-		var scope = 'user-read-private user-read-email';
 
-		var url = 'https://accounts.spotify.com/authorize';
-		url += '?response_type=token';
-		url += '&client_id=' + encodeURIComponent(client_id);
-		url += '&scope=' + encodeURIComponent(scope);
-		url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
-		url += '&state=' + encodeURIComponent(state);
+        if (!token && hash) {
+            token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
 
-		window.location = url;
-	};
+            window.location.hash = ""
+            window.localStorage.setItem("token", token)
+        }
 
-	render() {
-		return (
-			<div className="login-container">
-				<h1 size="title">Login Sekarang!</h1>
-				<div onClick={this.handleLogin} className="button">
-                    <button>Klik disini untuk Login</button>	
-				</div>
-			</div>
-		);
-	}
+        setToken(token)
+
+    }, [])
+
+    const logout = () => {
+        setToken("")
+        window.localStorage.removeItem("token")
+    }
+
+    const searchArtists = async (e) => {
+        e.preventDefault()
+        const {data} = await axios.get("https://api.spotify.com/v1/search", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                q: searchKey,
+                type: "artist"
+            }
+        })
+
+        setArtists(data.artists.items)
+    }
+
+    const renderArtists = () => {
+        return artists.map(artist => (
+            <div key={artist.id}>
+				{artist.images.length ? <img width={"100%"} src={artist.images[0].url} alt=""/> : <div>No Image</div>}
+                {artist.name}
+                <button type="button" onClick={() => setColor("Select")} >Select</button>
+                <button type="button" onClick={() => setColor("Deselect")} >Deselect</button>
+            </div>
+        ))
+    }
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <h1>Spotify React</h1>
+                {!token ?
+                    <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
+                        to Spotify</a>
+                    : <button onClick={logout}>Logout</button>}
+
+                {token ?
+                    <form className='search' onSubmit={searchArtists}>
+                        <input placeholder="Search..." type="text" onChange={e => setSearchKey(e.target.value)}/>
+                        <button type={"submit"}>Search</button>
+                    </form>
+                    : <h2>Please login</h2>
+                }
+
+                {renderArtists()}
+
+            </header>
+        </div>
+    );
 }
 
-export default Login;
+export default login;
